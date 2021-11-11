@@ -1,0 +1,164 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body, .container {
+    margin: 0;
+    padding: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+    font-size: 1em;
+  } 
+  
+  h3 {
+    border-bottom: 1px solid purple;
+    border-top: 1px solid purple;
+    line-height: 1.8em;
+    margin: 0;
+  }
+  
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .elevator-div {
+    max-height: 100vh;
+  }
+  
+  .elevator-div:first-child {
+    border-right: 1px solid orange;
+  }
+  
+  .col-12 {
+    width: 100%;
+  }
+  
+  .buttons-div {
+    border-right: 1px solid blue;
+    height: calc(100vh - 2.2em);
+    flex: 0 0 100px;
+  }
+  
+  .button-div { /* this only applies to a single button */
+    border: 1px solid #aaa;
+    margin: 0.25em;
+    height: 20px;
+    border-radius: 0.5em;
+  }
+  
+  .selected {
+    border-color: #3c620b;
+  }
+  
+  
+  button {
+    width: 30px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    height: 19px;
+    line-height: 18px;
+    font-size: 19px;
+    font-face: "JetBrains Mono NL" sans-serif;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    border-radius: 0;
+  }
+  
+  button:hover {
+    background-color: #b3e6b5;
+    color: #3c620b;
+    border-color: #3c620b;
+
+  }
+  
+  button:active {
+    background-color: #3c620b;
+    color: #b3e6b5;
+  }
+  
+  .logs-div {
+    height: calc(100vh - 2.2em);
+    flex: 0 1 auto;
+    overflow-y: auto;
+  }
+  
+  .col-3 {
+    width: 25%;
+  }
+  
+  .col-9 {
+    width: calc(100% - 100px)
+  }
+  
+  .col-8 {
+    width: 66.6667%;
+  }
+  
+  @media (min-width:800px) {
+    .col-md-6 { width: 50%; }
+    .col-md-4 { width: 33.3333%; }
+    .col-md-8 { width: 66.6667%; }
+    .col-md-9 { min-width: 75%; }
+  }
+  
+  table {
+    width: 100%;
+    border-bottom: 1px solid green;
+    border-collapse: collapse;
+    transition: all 0.5s ease-in;
+  }
+  
+  tbody {
+    border-bottom: 1px dashed green;
+    font-weight: 100;
+  }
+  
+  .log-indicator {
+    border-right: 1px solid red;
+    width: 30px;
+    font-size: 1.6em;
+  }
+  
+  td, tr, .log-indicator, .log-status {
+    height: 1em;
+    margin: 0;
+    padding: 0;
+  }
+
+  tbody {
+     transition: all 0.3s;
+  }
+  
+  .log-status {
+    text-align: justify;
+    padding: 0.25em 0.5em;
+    font-family: 'Consolas';
+    
+  }
+  
+  .floor-number {
+    display: inline-block;
+    background: purple;
+    color: white;
+    font-weight: bold;
+    min-width: 25px;
+    text-align: center;
+    border-radius: 0.125em;
+    padding: 0 0.2em;
+  }
+  
+
+  .current {
+     background-color: #b3e6b5;
+     border-color: #3c620b;
+     color: #3c620b;
+  }
+
+  .current button {
+     color: #3c620b;
+     border-color: #3c620b;
+  }
