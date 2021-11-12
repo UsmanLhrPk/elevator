@@ -1,111 +1,364 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" href="./styles.css">
-  <script src="./script.js"></script>
-  <title>JS Bin</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width">
+   <link rel="stylesheet" href="./styles.css">
+   <script src="./script.js"></script>
+   <title>JS Bin</title>
 
 </head>
+
 <body>
-<main class="container">
-  <div class="row">
-    <!-- Elevator A -->
-    <div class="elevator-div col-12 col-md-6">
-      <h3>Elevator A</h3>
+   <main class="container">
       <div class="row">
-        <!-- Buttons -->
-        <div class="buttons-div col-3">
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="9">9</button>
-          </div>
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="8">8</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="7">7</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="6">6</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="5">5</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="4">4</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="3">3</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="2">2</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="1">1</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="0">0</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="A" data-floor="-1">-1</button>
-          </div> 
-        </div>
-        <!-- Logs -->
-        <div class="logs-div col-9">
-          <table id="elvALogs">
-          </table>
-        </div>
-      </div>      
-    </div>      
-    <!-- Elevator B -->
-    <div class="elevator-div col-12 col-md-6">
-      <h3>Elevator B</h3>
-      <div class="row">
-        <!-- Buttons -->
-        <div class="buttons-div col-3">
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="0">0</button>
-          </div>
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="1">1</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="2">2</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="3">3</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="4">4</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="5">5</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="6">6</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="7">7</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="8">8</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="9">9</button>
-          </div> 
-          <div class="button-div">
-            <button  class="floor-button" data-elevator="B" data-floor="10">10</button>
-          </div> 
-        </div>
-        <!-- Logs -->
-        <div class="logs-div col-9">
-          <table id="elvBLogs">
-          </table>
- 	</div>
+         <!-- Elevator A -->
+         <div class="elevator-div col-12 col-md-6">
+            <h3>Elevator A</h3>
+            <div class="row">
+               <!-- Buttons -->
+               <div class="buttons-div col-4">
+                  <div class="row button-div">
+                     <div class="col-6">
+                        <button id="Arun" class="metal linear w-100" onclick="run.bind(this)();"
+                           data-elevator="A">Run</button>
+                     </div>
+                     <div class="col-6">
+                        <button id="Apause" class="metal linear w-100" onclick="pause.bind(this)();"
+                           data-elevator="A">Pause</button>
+                     </div>
+                  </div>
+                  <div>
+                     <div id="A9" class="row button-div">
+                        <div class="col-6">
+                           <button id="A9button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="9">9</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A9down" class="metal linear floor-button" data-elevator="A" data-floor="9"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A8" class="row button-div">
+                        <div class="col-6">
+                           <button id="A8up" class="metal linear floor-button" data-elevator="A" data-floor="8"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A8button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="8">8</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A8down" class="metal linear floor-button" data-elevator="A" data-floor="8"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A7" class="row button-div">
+                        <div class="col-6">
+                           <button id="A7up" class="metal linear floor-button" data-elevator="A" data-floor="7"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A7button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="7">7</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A7down" class="metal linear floor-button" data-elevator="A" data-floor="7"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A6" class="row button-div">
+                        <div class="col-6">
+                           <button id="A6up" class="metal linear floor-button" data-elevator="A" data-floor="6"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A6button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="6">6</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A6down" class="metal linear floor-button" data-elevator="A" data-floor="6"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A5" class="row button-div">
+                        <div class="col-6">
+                           <button id="A5up" class="metal linear floor-button" data-elevator="A" data-floor="5"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A5button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="5">5</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A5down" class="metal linear floor-button" data-elevator="A" data-floor="5"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A4" class="row button-div">
+                        <div class="col-6">
+                           <button id="A4up" class="metal linear floor-button" data-elevator="A" data-floor="4"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A4button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="4">4</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A4down" class="metal linear floor-button" data-elevator="A" data-floor="4"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A3" class="row button-div">
+                        <div class="col-6">
+                           <button id="A3up" class="metal linear floor-button" data-elevator="A" data-floor="3"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A3button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="3">3</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A3down" class="metal linear floor-button" data-elevator="A" data-floor="3"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A2" class="row button-div">
+                        <div class="col-6">
+                           <button id="A2up" class="metal linear floor-button" data-elevator="A" data-floor="2"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A2button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="2">2</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A2down" class="metal linear floor-button" data-elevator="A" data-floor="2"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A1" class="row button-div">
+                        <div class="col-6">
+                           <button id="A1up" class="metal linear floor-button" data-elevator="A" data-floor="1"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A1button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="1">1</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A1down" class="metal linear floor-button" data-elevator="A" data-floor="1"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A0" class="row button-div">
+                        <div class="col-6">
+                           <button id="A0up" class="metal linear floor-button" data-elevator="A" data-floor="0"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A0button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="0">0</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A0down" class="metal linear floor-button" data-elevator="A" data-floor="0"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="A-1" class="row button-div">
+                        <div class="col-6">
+                           <button id="A-1up" class="metal linear floor-button" data-elevator="A" data-floor="-1"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="A-1button" class="metal linear double floor-button" data-elevator="A"
+                              data-floor="-1">-1</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- Logs -->
+               <div class="logs-div col-auto">
+                  <table id="elvALogs">
+                  </table>
+               </div>
+            </div>
+         </div>
+         <!-- Elevator B -->
+         <div class="elevator-div col-12 col-md-6">
+            <h3>Elevator B</h3>
+            <div class="row">
+               <!-- Buttons -->
+               <div class="buttons-div col-4">
+                  <div class="row button-div">
+                     <div class="col-6">
+                        <button id="Brun" class="metal linear w-100" onclick="run.bind(this)();"
+                           data-elevator="B">Run</button>
+                     </div>
+                     <div class="col-6">
+                        <button id="Bpause" class="metal linear w-100" onclick="pause.bind(this)();"
+                           data-elevator="B">Pause</button>
+                     </div>
+                  </div>
+                  <div>
+                     <div id="B10" class="row button-div">
+                        <div class="col-6">
+                           <button id="B10button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="10">10</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B10down" class="metal linear floor-button" data-elevator="B" data-floor="10"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B9" class="row button-div">
+                        <div class="col-6">
+                           <button id="B9up" class="metal linear floor-button" data-elevator="B" data-floor="9"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B9button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="9">9</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B9down" class="metal linear floor-button" data-elevator="B" data-floor="9"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B8" class="row button-div">
+                        <div class="col-6">
+                           <button id="B8up" class="metal linear floor-button" data-elevator="B" data-floor="8"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B8button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="8">8</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B8down" class="metal linear floor-button" data-elevator="B" data-floor="8"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B7" class="row button-div">
+                        <div class="col-6">
+                           <button id="B7up" class="metal linear floor-button" data-elevator="B" data-floor="7"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B7button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="7">7</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B7down" class="metal linear floor-button" data-elevator="B" data-floor="7"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B6" class="row button-div">
+                        <div class="col-6">
+                           <button id="B6up" class="metal linear floor-button" data-elevator="B" data-floor="6"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B6button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="6">6</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B6down" class="metal linear floor-button" data-elevator="B" data-floor="6"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B5" class="row button-div">
+                        <div class="col-6">
+                           <button id="B5up" class="metal linear floor-button" data-elevator="B" data-floor="5"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B5button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="5">5</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B5down" class="metal linear floor-button" data-elevator="B" data-floor="5"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B4" class="row button-div">
+                        <div class="col-6">
+                           <button id="B4up" class="metal linear floor-button" data-elevator="B" data-floor="4"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B4button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="4">4</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B4down" class="metal linear floor-button" data-elevator="B" data-floor="4"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B3" class="row button-div">
+                        <div class="col-6">
+                           <button id="B3up" class="metal linear floor-button" data-elevator="B" data-floor="3"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B3button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="3">3</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B3down" class="metal linear floor-button" data-elevator="B" data-floor="3"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B2" class="row button-div">
+                        <div class="col-6">
+                           <button id="B2up" class="metal linear floor-button" data-elevator="B" data-floor="2"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B2button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="2">2</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B2down" class="metal linear floor-button" data-elevator="B" data-floor="2"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B1" class="row button-div">
+                        <div class="col-6">
+                           <button id="B1up" class="metal linear floor-button" data-elevator="B" data-floor="1"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B1button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="1">1</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B1down" class="metal linear floor-button" data-elevator="B" data-floor="1"
+                              data-direction="down">&dArr;</button>
+                        </div>
+                     </div>
+                     <div id="B0" class="row button-div">
+                        <div class="col-6">
+                           <button id="B0up" class="metal linear floor-button" data-elevator="B" data-floor="0"
+                              data-direction="up">&uArr;</button>
+                        </div>
+                        <div class="col-6">
+                           <button id="B0button" class="metal linear double floor-button" data-elevator="B"
+                              data-floor="0">0</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- Logs -->
+               <div class="logs-div col-9">
+                  <table id="elvBLogs">
+                  </table>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-  </div>
-</main>
+   </main>
 </body>
+
 </html>

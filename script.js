@@ -10,21 +10,37 @@ document.addEventListener("DOMContentLoaded", () => {
          e.preventDefault();
          let elv = button.dataset.elevator
          let flr = button.dataset.floor
-         let status = elv === "A" ? ELV_A.call(flr) : ELV_B.call(flr)
-         status === true ? button.parentNode.classList.add("selected") : null
+         let dir = button.dataset.hasOwnProperty("direction") ? button.dataset.direction : false
+         let status = elv === "A" ? ELV_A.call(flr, dir) : ELV_B.call(flr, dir)
+         status === true ? button.classList.add("selected") : null
       })
    }
 
+   function pause() {
+      this.dataset.elevator === "A" ? ELV_A.pause() : ELV_B.pause()
+   }
 
+   function run() {
+      this.dataset.elevator === "A" ? ELV_A.run() : ELV_B.run()
+   }
 })
 
-
-
 function updateCurrent(elv, floor) {
-   let button = document.querySelector(`button[data-elevator='${elv}'][data-floor='${floor}']`).parentNode
-   button.classList.add("current")
-   button.previousElementSibling ? button.previousElementSibling.classList.remove("current") : null
-   button.nextElementSibling ? button.nextElementSibling.classList.remove("current") : null
+   let buttonParentDiv = document.getElementById(`${elv}${floor}`)
+   let buttonButton = document.getElementById(`${elv}${floor}button`)
+   buttonParentDiv.classList.add("current")
+   buttonButton.classList.add("current-button")
+
+   let previousSibling = buttonParentDiv.previousElementSibling
+   let nextSibling = buttonParentDiv.nextElementSibling
+   if (previousSibling) {
+      previousSibling.classList.remove("current")
+      document.getElementById(`${elv}${floor + 1}button`).classList.remove("current-button")
+   }
+   if (nextSibling) {
+      nextSibling.classList.remove("current")
+      document.getElementById(`${elv}${floor - 1}button`).classList.remove("current-button")
+   }
 }
 
 // log status to the elevator log window
@@ -42,7 +58,6 @@ function addToLogs(elvName, msg, props = {}) {
    }
 
 }
-
 
 class Elevator {
    constructor(name, minFloor, maxFloor) {
@@ -75,11 +90,13 @@ class Elevator {
          if (!this.isMoving) {
             // The floor is above the currentFloor
             if (floor > this.currentFloor) {
-               this.queue["up"].add(floor)
+               direction = "up"
+               // this.queue["up"].add(floor)
 
                // The floor is below the currentFloor
             } else if (floor < this.currentFloor) {
-               this.queue["down"].add(floor)
+               direction = "down"
+               // this.queue["down"].add(floor)
 
                // The floor is the currentFloor
             } else {
@@ -94,14 +111,17 @@ class Elevator {
                if (this.elevatorDirection === "up") {
                   // The floor is at least 2 floors above the curentFloor
                   if (floor - this.currentFloor >= 2 || this.isPaused) {
-                     this.queue["up"].add(floor)
+                     direction = "up"
+                     // this.queue["up"].add(floor)
                      // The floor is less than 2 floors above the currentFloor
                   } else {
-                     this.queue["down"].add(floor)
+                     direction = "down"
+                     // this.queue["down"].add(floor)
                   }
                   // The elevator is going down
                } else {
-                  this.queue["up"].add(floor)
+                  direction = "up"
+                  // this.queue["up"].add(floor)
                }
 
                // The floor called is below the currentFloor
@@ -110,25 +130,29 @@ class Elevator {
                if (this.elevatorDirection === "down") {
                   // The floor is at least 2 floors above the curentFloor
                   if (this.currentFloor - floor >= 2 || this.isPaused) {
-                     this.queue["down"].add(floor)
+                     direction = "down"
+                     // this.queue["down"].add(floor)
                      // The floor is less than 2 floors above the currentFloor
                   } else {
-                     this.queue["up"].add(floor)
+                     direction = "up"
+                     // this.queue["up"].add(floor)
                   }
                   // The elevator is going up
                } else {
-                  this.queue["down"].add(floor)
+                  direction = "down"
+                  // this.queue["down"].add(floor)
                }
             }
          }
 
          // 2. Direction is provided
       } else {
-         this.queue[direction].add(floor)
+         // this.queue[direction].add(floor)
       }
+      this.queue[direction].add(floor)
 
-      !this.isMoving ? this.selectDestinationFloor() : null
-      addToLogs(this.name, `{up: ${Array.from(this.queue["up"])},  down: ${Array.from(this.queue["down"])}}`)
+      this.isPaused ? this.selectDestinationFloor() : null
+      // addToLogs(this.name, `{up: ${Array.from(this.queue["up"])},  down: ${Array.from(this.queue["down"])}}`)
       return true
    }
 
@@ -175,7 +199,7 @@ class Elevator {
                // Check the floor in the up queue above the currentFLoor
                if (upQueueAbove.length !== 0 || downQueue.length === 0) {
                   // do nothing
-               } else if (downQueue.length !== 0) {
+               } else if (downQueue.length !== 0 || this.currentFloor === this.maxFloor) {
                   this.queueDirection = "down"
                }
 
@@ -197,7 +221,7 @@ class Elevator {
                }
 
                // Check the downQueue
-            } else if (upQueue.length !== 0) {
+            } else if (upQueue.length !== 0 || this.currentFloor === this.minFloor) {
                this.queueDirection = "up"
             } else {
                this.queueDirection = null
@@ -211,14 +235,18 @@ class Elevator {
    selectDestinationFloor() {
       this.selectQueueDirection()
       let nextFloor = null
-      let upQueue = Array.from(this.queue["up"]).sort()
-      let downQueue = Array.from(this.queue["down"]).sort().reverse()
-      let currentNext = `${this.elevatorDirection}Next` // "upNext" OR "downNext"
-      let otherNext = `${this.elevatorDirection === "up" ? "up" : "down"}Next` // "upNext" OR "downNext"
+      let upQueue = Array.from(this.queue["up"]).sort((a, b) => {
+         return a - b
+      })
+      addToLogs(this.name, `upQueue: [${upQueue}]`)
+      let downQueue = Array.from(this.queue["down"]).sort((a, b) => {
+         return b - a
+      })
+      addToLogs(this.name, `downQueue: [${downQueue}]`)
       // The elevator is on standby
       if (!this.isMoving) {
          let currentQueue = Array.from(this.queue[this.queueDirection])
-         this.queue[currentNext] = currentQueue[0]
+         this.queue[`${this.queueDirection}Next`] = currentQueue[0]
          // The elevator is moving
       } else {
          // upNext
@@ -306,10 +334,10 @@ class Elevator {
       this.isPaused = true
       this.interval = false
       addToLogs(this.name, `&lArr;  &lArr;  DOORS OPENING  &rArr;  &rArr;`, { textAlign: "center", backgroundColor: "#b3e6b5", color: "#3c620b", fontWeight: "bold" })
+      this.updateSelected()
       setTimeout(() => {
          addToLogs(this.name, `&rArr;  &rArr;  DOORS CLOSING  &lArr;  &lArr;`, { textAlign: "center", backgroundColor: "#ff9999", color: "#cf1c44", fontWeight: "bold" })
          this.queue[this.queueDirection].delete(this.destinationFloor)
-         this.updateSelected()
          this.isPaused = false
          this.selectDestinationFloor()
       }, 5000);
@@ -323,10 +351,24 @@ class Elevator {
       return false
    }
 
-   updateSelected() {
-      if (!this.queue[this.queueDirection].has(this.destinationFloor)) {
-         document.querySelector(`button[data-elevator='${this.name}'][data-floor='${this.destinationFloor}']`).parentNode.classList.remove("selected")
+   pause() {
+      clearInterval(this.interval)
+      this.interval = false
+      this.isPaused = true
+   }
+
+   run() {
+      this.isPaused = false
+      if (this.destinationFloor !== null) {
+         this.move()
+      } else {
+         this.selectDestinationFloor()
       }
+   }
+
+   updateSelected() {
+      document.getElementById(`${this.name}${this.destinationFloor}button`).classList.remove("selected")
+      document.getElementById(`${this.name}${this.destinationFloor}${this.queueDirection}`).classList.remove("selected")
    }
 
    statuses() {
