@@ -25,6 +25,12 @@ h3 {
   width: 100%;
 }
 
+.col {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .col-12 {
   width: 100%;
 }
@@ -72,6 +78,11 @@ h3 {
   height: calc(100vh - 2.2em);
   flex: 0 1 auto;
   overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.logs-div table {
+  transition: all 0.3s ease-in;
 }
 
 .log-indicator {
@@ -103,7 +114,15 @@ tr,
 }
 
 .w-100 {
-   width: 100% !important;
+  width: 100% !important;
+}
+
+.w-auto {
+  width: auto !important;
+}
+
+.font-1em {
+  font-size: 1.58em !important;
 }
 
 .button-div {
@@ -113,13 +132,25 @@ tr,
   margin: 0.5em 4px;
   border-radius: 0.5em;
   box-sizing: border-box;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .double {
   width: 50px !important;
   margin-right: 0.125em;
   margin-left: 0.125em;
+}
+
+.single {
+  width: 97% !important;
+}
+
+.left {
+  margin-left: 0.125em;
+}
+
+.right {
+  margin-right: 0.125em;
 }
 
 .selected {
@@ -131,14 +162,24 @@ tr,
 .current {
   background-color: rgb(255, 234, 118);
   border-color: hsl(51, 100%, 53%);
-
 }
 
 button.current-button {
   color: hsl(51, 100%, 53%);
-  text-shadow: hsla(51, 100%, 33%, 0.3) 0 -1px 0, hsl(51, 9%, 59%) 0 2px 1px,
-    hsla(31, 100%, 93%, 1) 0 0 5px, hsla(51, 100%, 66%, 0.6) 0 0 20px;
-    hsla(200, 100%, 80%, 1) 0 0 5px, hsla(210, 100%, 50%, 0.6) 0 0 20px;
+  text-shadow: hsla(51, 100%, 20%, 0.3) 0 -1px 0, hsl(51, 100%, 85%) 0 2px 1px,
+    hsla(41, 100%, 80%, 1) 0 0 5px, hsla(51, 100%, 50%, 0.6) 0 0 20px !important;
+}
+
+.paused {
+  color: hsl(10, 100%, 53%) !important;
+  text-shadow: hsla(10, 100%, 20%, 0.3) 0 -1px 0, hsl(10, 100%, 85%) 0 2px 1px,
+    hsla(0, 100%, 80%, 1) 0 0 5px, hsla(10, 100%, 50%, 0.6) 0 0 20px !important;
+}
+
+.running {
+  color: hsl(140, 100%, 53%) !important;
+  text-shadow: hsla(140, 100%, 20%, 0.3) 0 -1px 0, hsl(140, 100%, 85%) 0 2px 1px,
+    hsla(130, 100%, 80%, 1) 0 0 5px, hsla(140, 100%, 50%, 0.6) 0 0 20px !important;
 }
 
 table {
@@ -211,9 +252,9 @@ a {
   box-shadow: inset hsla(0, 0%, 15%, 1) 0 0px 0px 4px,
     /* border */ inset hsla(0, 0%, 15%, 0.8) 0 -1px 5px 4px,
     /* soft SD */ inset hsla(0, 0%, 0%, 0.25) 0 -1px 0px 7px,
-    /* bottom SD */ inset hsla(0, 0%, 100%, 0.7) 0 2px 1px 7px,
-    /* top HL */ hsla(0, 0%, 0%, 0.15) 0 -5px 6px 4px,
-    /* outer SD */ hsla(0, 0%, 100%, 0.5) 0 5px 6px 4px; /* outer HL */
+    /* bottom SD */ inset hsla(0, 0%, 100%, 0.7) 0 2px 1px 7px;
+  /* top HL hsla(0, 0%, 0%, 0.15) 0 -5px 6px 4px, */
+  /* outer SD hsla(0, 0%, 100%, 0.5) 0 5px 6px 4px; outer HL */
 
   transition: all 0.2s;
 }

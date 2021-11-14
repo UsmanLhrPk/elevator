@@ -16,13 +16,35 @@ document.addEventListener("DOMContentLoaded", () => {
       })
    }
 
-   function pause() {
-      this.dataset.elevator === "A" ? ELV_A.pause() : ELV_B.pause()
-   }
+   let runA = document.getElementById("Arun")
+   let pauseA = document.getElementById("Apause")
+   let runB = document.getElementById("Brun")
+   let pauseB = document.getElementById("Bpause")
 
-   function run() {
-      this.dataset.elevator === "A" ? ELV_A.run() : ELV_B.run()
-   }
+   runA.addEventListener("click", () => {
+      ELV_A.run()
+      runA.classList.add("running")
+      pauseA.classList.remove("paused")
+   })
+   pauseA.addEventListener("click", () => {
+      if (ELV_A.isPaused === false) {
+         ELV_A.pause()
+         pauseA.classList.add("paused")
+         runA.classList.remove("running")
+      }
+   })
+   runB.addEventListener("click", () => {
+      ELV_B.run()
+      runB.classList.add("running")
+      pauseB.classList.remove("paused")
+   })
+   pauseB.addEventListener("click", () => {
+      if (ELV_B.isPaused === false) {
+         ELV_B.pause()
+         pauseB.classList.add("paused")
+         runB.classList.remove("running")
+      }
+   })
 })
 
 function updateCurrent(elv, floor) {
@@ -56,7 +78,7 @@ function addToLogs(elvName, msg, props = {}) {
          table.lastChild.firstElementChild.lastElementChild.style[p] = props[p]
       }
    }
-
+   table.parentNode.scrollTop += table.parentNode.scrollHeight;
 }
 
 class Elevator {
@@ -77,8 +99,8 @@ class Elevator {
 
       this.isMoving = false
       this.isPaused = false
+      this.destinationFloor = null
       this.currentFloor = (this.minFloor <= 0) ? 0 : this.minFloor
-      this.currentFloor = 0
       updateCurrent(this.name, this.currentFloor)
       this.interval = false
    }
@@ -91,12 +113,10 @@ class Elevator {
             // The floor is above the currentFloor
             if (floor > this.currentFloor) {
                direction = "up"
-               // this.queue["up"].add(floor)
 
                // The floor is below the currentFloor
             } else if (floor < this.currentFloor) {
                direction = "down"
-               // this.queue["down"].add(floor)
 
                // The floor is the currentFloor
             } else {
@@ -112,16 +132,15 @@ class Elevator {
                   // The floor is at least 2 floors above the curentFloor
                   if (floor - this.currentFloor >= 2 || this.isPaused) {
                      direction = "up"
-                     // this.queue["up"].add(floor)
+
                      // The floor is less than 2 floors above the currentFloor
                   } else {
                      direction = "down"
-                     // this.queue["down"].add(floor)
                   }
+
                   // The elevator is going down
                } else {
                   direction = "up"
-                  // this.queue["up"].add(floor)
                }
 
                // The floor called is below the currentFloor
@@ -131,53 +150,35 @@ class Elevator {
                   // The floor is at least 2 floors above the curentFloor
                   if (this.currentFloor - floor >= 2 || this.isPaused) {
                      direction = "down"
-                     // this.queue["down"].add(floor)
+
                      // The floor is less than 2 floors above the currentFloor
                   } else {
                      direction = "up"
-                     // this.queue["up"].add(floor)
                   }
+
                   // The elevator is going up
                } else {
                   direction = "down"
-                  // this.queue["down"].add(floor)
                }
             }
          }
-
-         // 2. Direction is provided
-      } else {
-         // this.queue[direction].add(floor)
       }
+
+      if (floor == this.currentFloor && ((direction === this.elevatorDirection && !this.isPaused) || this.destinationFloor === null)) {
+         return addToLogs(this.name, `The elevator is already at ${florify(floor)} floor`)
+      }
+
       this.queue[direction].add(floor)
 
-      this.isPaused ? this.selectDestinationFloor() : null
-      // addToLogs(this.name, `{up: ${Array.from(this.queue["up"])},  down: ${Array.from(this.queue["down"])}}`)
+      this.isMoving ? !this.isPaused ? this.selectDestinationFloor() : null : this.selectDestinationFloor()
+      addToLogs(this.name, `{up: ${Array.from(this.queue["up"])},  down: ${Array.from(this.queue["down"])}}`)
       return true
-   }
-
-   selectElevatorDirection() {
-      if (!this.isMoving) {
-         this.elevatorDirection = Array.from(this.queue[this.queueDirection])[0] > this.currentFloor ? "up" : "down"
-      } else {
-         if (this.destinationFloor !== null) {
-            if (this.destinationFloor > this.currentFloor) {
-               this.elevatorDirection = "up"
-            } else if (this.destinationFloor < this.currentFloor) {
-               this.elevatorDirection = "down"
-            }
-         } else {
-            this.elevatorDirection = null
-         }
-      }
    }
 
    selectQueueDirection() {
       let downQueue = Array.from(this.queue["down"])
       let upQueue = Array.from(this.queue["up"])
       let upQueueAbove = upQueue.filter(floor => floor > this.currentFloor)
-      let upQueueBelow = upQueue.filter(floor => floor < this.currentFloor)
-      let downQueueAbove = downQueue.filter(floor => floor > this.currentFloor)
       let downQueueBelow = downQueue.filter(floor => floor < this.currentFloor)
 
       // The elevator is on standby
@@ -229,7 +230,28 @@ class Elevator {
          }
       }
 
-      this.selectElevatorDirection()
+      this.queueDirection !== null ? this.selectElevatorDirection() : null
+   }
+
+   selectElevatorDirection() {
+      if (!this.isMoving) {
+         if (this.queue[this.queueDirection].size > 0) {
+            this.elevatorDirection = Array.from(this.queue[this.queueDirection])[0] > this.currentFloor ? "up" : "down"
+         } else {
+            this.elevatorDirection = null
+         }
+
+      } else {
+         if (this.destinationFloor !== null) {
+            if (this.destinationFloor > this.currentFloor) {
+               this.elevatorDirection = "up"
+            } else if (this.destinationFloor < this.currentFloor) {
+               this.elevatorDirection = "down"
+            }
+         } else {
+            this.elevatorDirection = null
+         }
+      }
    }
 
    selectDestinationFloor() {
@@ -305,25 +327,33 @@ class Elevator {
       }
       this.selectElevatorDirection()
 
+
+      if (this.destinationFloor == this.currentFloor) {
+         this.queue[this.queueDirection].delete(this.destinationFloor)
+         this.updateSelected();
+         return this.selectDestinationFloor()
+      }
       this.isMoving = this.destinationFloor !== null ? true : this.stop() // only move elevator when the destinationFloor is not null
       this.isMoving && !this.interval && !this.isPaused ? this.move() : null // only call elevator when interval is false; to avoid setting multiple intervals 
       addToLogs(this.name, this.statuses())
    }
 
    move() {
-      if (this.isMoving && !this.isPaused) {
+      if (this.isMoving) {
          this.interval = setInterval(() => {
-            if (this.elevatorDirection === "up") {
-               this.currentFloor++
-            } else if (this.elevatorDirection === "down") {
-               this.currentFloor--
-            }
+            if (!this.isPaused) {
+               if (this.elevatorDirection === "up") {
+                  this.currentFloor++
+               } else if (this.elevatorDirection === "down") {
+                  this.currentFloor--
+               }
 
-            addToLogs(this.name, `The elevator is at ${florify(this.currentFloor)} floor`)
-            updateCurrent(this.name, this.currentFloor)
+               addToLogs(this.name, `The elevator is at ${florify(this.currentFloor)} floor`)
+               updateCurrent(this.name, this.currentFloor)
 
-            if (this.currentFloor == this.destinationFloor) {
-               this.handleElevatorArrival()
+               if (this.currentFloor == this.destinationFloor) {
+                  this.handleElevatorArrival()
+               }
             }
          }, 2000);
       }
@@ -352,23 +382,26 @@ class Elevator {
    }
 
    pause() {
-      clearInterval(this.interval)
-      this.interval = false
       this.isPaused = true
+      // clearInterval(this.interval)
+      // this.interval = false
+      addToLogs(this.name, `Elevator has been paused`, { color: "#003396", fontWeight: "bold", textAlign: "center", backgroundColor: "#86cefa" })
    }
 
    run() {
       this.isPaused = false
-      if (this.destinationFloor !== null) {
+      if (this.interval === false) {
          this.move()
-      } else {
-         this.selectDestinationFloor()
+
       }
    }
 
    updateSelected() {
       document.getElementById(`${this.name}${this.destinationFloor}button`).classList.remove("selected")
-      document.getElementById(`${this.name}${this.destinationFloor}${this.queueDirection}`).classList.remove("selected")
+      let indicator = document.getElementById(`${this.name}${this.destinationFloor}${this.queueDirection}`)
+      if (indicator) {
+         indicator.classList.remove("selected")
+      }
    }
 
    statuses() {
